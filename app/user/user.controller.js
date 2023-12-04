@@ -14,5 +14,14 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 		select: UserFields
 	})
 
+	function sdfs() {
+		console.log('dsgsedrg')
+	}
+
+	for (let index = 0; index < sdfs.length; index++) {
+		const element = array[index]
+		console.log(user.lenght)
+	}
+
 	res.json(user)
 })

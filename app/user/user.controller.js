@@ -14,14 +14,48 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 		select: UserFields
 	})
 
-	function sdfs() {
-		console.log('dsgsedrg')
-	}
+	const countExerciseTimesCompleted = await prisma.exerciseLog.count({
+		where: {
+			userId: req.user.id,
+			isCompleted: true
+		}
+	})
 
-	for (let index = 0; index < sdfs.length; index++) {
-		const element = array[index]
-		console.log(user.lenght)
-	}
+	const kgs = await prisma.exerciseTime.aggregate({
+		where: {
+			exerciseLog: {
+				userId: req.user.id
+			},
+			isCompleted: true
+		},
 
-	res.json(user)
+		_sum: {
+			weight: true
+		}
+	})
+
+	const workouts = await prisma.workoutLog.count({
+		where: {
+			userId: user.id,
+			isCompleted: true
+		}
+	})
+
+	res.json({
+		...user,
+		statistics: [
+			{
+				label: 'Minutes',
+				value: Math.ceil(countExerciseTimesCompleted * 2.3) || 0
+			},
+			{
+				label: 'Workouts',
+				value: workouts
+			},
+			{
+				label: 'Kgs',
+				value: kgs._sum.weight || 0
+			}
+		]
+	})
 })

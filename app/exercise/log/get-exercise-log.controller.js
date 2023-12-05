@@ -46,29 +46,3 @@ export const getExerciseLog = asyncHandler(async (req, res) => {
 		times: addPrevValues(exerciseLog, prevExerciseLog)
 	})
 })
-
-// @desc    Get exerciseLogs
-// @route   GET /api/exercises/log
-// @access  Private
-export const getAllExerciseLogs = asyncHandler(async (req, res) => {
-	const exerciseLogs = await prisma.exerciseLog.findMany({
-		include: {
-			user: true,
-			workoutLog: true,
-			exercise: true,
-			_count: true,
-			times: {
-				orderBy: {
-					id: 'asc'
-				}
-			}
-		}
-	})
-
-	if (!exerciseLogs) {
-		res.status(404)
-		throw new Error('ExerciseLogs not found!')
-	}
-
-	res.json(exerciseLogs)
-})

@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import morgan from 'morgan'
 import path from 'path'
+import cors from 'cors'
 
 import { errorHandler, notFound } from './app/middleware/error.middleware.js'
 
@@ -19,6 +20,7 @@ const app = express()
 async function main() {
 	if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 
+	app.use(cors())
 	app.use(express.json())
 
 	const __dirname = path.resolve()

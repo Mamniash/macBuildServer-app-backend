@@ -9,10 +9,7 @@ import {
 	updateExercise
 } from './exercise.controller.js'
 import { createNewExerciseLog } from './log/exercise-log.controller.js'
-import {
-	getExerciseLog,
-	getAllExerciseLogs
-} from './log/get-exercise-log.controller.js'
+import { getExerciseLog } from './log/get-exercise-log.controller.js'
 import {
 	completeExerciseLog,
 	updateExerciseLogTime
@@ -31,8 +28,6 @@ router
 	.route('/log/:id')
 	.post(protect, createNewExerciseLog)
 	.get(protect, getExerciseLog)
-
-router.route('/logs').get(protect, getAllExerciseLogs)
 
 router.route('/log/time/:id').put(protect, updateExerciseLogTime)
 

@@ -51,7 +51,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 		data: {
 			email,
 			password: await hash(password),
-			name: faker.name.fullName(),
+			name: faker.person.fullName(),
 			images: ['/images/before.jpg', '/images/after.jpg']
 		},
 		select: UserFields

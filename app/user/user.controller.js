@@ -14,7 +14,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 		select: UserFields
 	})
 
-	const countExerciseTimesCompleted = await prisma.exerciseLog.count({
+	let countExerciseTimesCompleted = await prisma.exerciseLog.count({
 		where: {
 			userId: req.user.id,
 			isCompleted: true
@@ -41,19 +41,31 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 		}
 	})
 
+	const labels = ['Minutes', 'Workouts', 'Kgs']
+
+	if (kgs._sum.weight > 1000) {
+		kgs._sum.weight = Math.round(kgs._sum.weight / 1000)
+		labels[2] = 'Tons'
+	}
+
+	if (countExerciseTimesCompleted > 200) {
+		countExerciseTimesCompleted = Math.round(countExerciseTimesCompleted / 60)
+		labels[0] = 'Hour'
+	}
+
 	res.json({
 		...user,
 		statistics: [
 			{
-				label: 'Minutes',
+				label: labels[0],
 				value: Math.ceil(countExerciseTimesCompleted * 2.3) || 0
 			},
 			{
-				label: 'Workouts',
+				label: labels[1],
 				value: workouts
 			},
 			{
-				label: 'Kgs',
+				label: labels[2],
 				value: kgs._sum.weight || 0
 			}
 		]

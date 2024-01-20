@@ -9,6 +9,9 @@ import { calculateMinute } from './calculate-minute.js'
 // @access  Private
 export const getWorkouts = asyncHandler(async (req, res) => {
 	const workouts = await prisma.workout.findMany({
+		where: {
+			userId: +req.user.id
+		},
 		orderBy: {
 			createdAt: 'desc'
 		},
@@ -51,8 +54,9 @@ export const createNewWorkout = asyncHandler(async (req, res) => {
 		data: {
 			name,
 			exercises: {
-				connect: exerciseIds.map(id => ({ id: +id }))
-			}
+				connect: exerciseIds.map((id) => ({ id: +id }))
+			},
+			userId: +req.user.id
 		}
 	})
 
@@ -73,7 +77,7 @@ export const updateWorkout = asyncHandler(async (req, res) => {
 			data: {
 				name,
 				exercises: {
-					set: exerciseIds.map(id => ({ id: +id }))
+					set: exerciseIds.map((id) => ({ id: +id }))
 				}
 			}
 		})

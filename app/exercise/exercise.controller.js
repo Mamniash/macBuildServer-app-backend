@@ -12,7 +12,8 @@ export const createNewExercise = asyncHandler(async (req, res) => {
 		data: {
 			name,
 			times,
-			iconPath
+			iconPath,
+			userId: +req.user?.id
 		}
 	})
 
@@ -67,6 +68,9 @@ export const deleteExercise = asyncHandler(async (req, res) => {
 // @access  Private
 export const getExercises = asyncHandler(async (req, res) => {
 	const exercises = await prisma.exercise.findMany({
+		where: {
+			userId: +req.user.id
+		},
 		orderBy: {
 			createdAt: 'desc'
 		}

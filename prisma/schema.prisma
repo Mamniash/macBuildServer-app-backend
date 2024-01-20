@@ -29,6 +29,8 @@ model Workout {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  userId Int? @map("user_id")
+
   name        String
   exercises   Exercise[]
   workoutLogs WorkoutLog[]
@@ -42,6 +44,8 @@ model Exercise {
   name     String
   times    Int
   iconPath String @map("icon_path")
+
+  userId Int? @map("user_id")
 
   workouts Workout[]
 

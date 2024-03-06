@@ -8,10 +8,7 @@ import cors from 'cors'
 import { errorHandler, notFound } from './app/middleware/error.middleware.js'
 
 import authRoutes from './app/auth/auth.routes.js'
-import workoutRoutes from './app/workout/workout.routes.js'
-import exerciseRoutes from './app/exercise/exercise.routes.js'
 import { prisma } from './app/prisma.js'
-import userRoutes from './app/user/user.routes.js'
 
 dotenv.config()
 
@@ -28,17 +25,16 @@ async function main() {
 	app.use('/uploads', express.static(path.join(__dirname, '/uploads/')))
 
 	app.use('/api/auth', authRoutes)
-	app.use('/api/users', userRoutes)
-	app.use('/api/workouts', workoutRoutes)
-	app.use('/api/exercises', exerciseRoutes)
 
 	app.use(notFound)
 	app.use(errorHandler)
 
 	const PORT = process.env.PORT || 5000
+	const IP = 'localhost'
 
 	app.listen(
 		PORT,
+		IP,
 		console.log(
 			`🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
 				.blue.bold
